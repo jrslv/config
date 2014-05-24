@@ -1,0 +1,12 @@
+{
+    "license": "MIT",
+    "languages": {
+        "PHP" : true,
+        "JavaScript": false
+    },
+    "planets": [
+        "Jupiter",
+        "Saturn",
+        "Neptun"
+    ]
+}

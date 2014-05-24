@@ -1,0 +1,16 @@
+{
+    "name": "jrslv/config",
+    "license": "MIT",
+    "description": "JSON and INI configuration files loader and parser",
+    "require": {
+        "php": ">= 5.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">= 4.0"
+    },
+    "autoload": {
+        "files": [
+            "src/config.php"
+        ]
+    }
+}
