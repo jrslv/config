@@ -19,9 +19,10 @@ class Config implements \ArrayAccess {
 
     /**
      * @param string $path
-     * @throws Exception if path cannot be found or unsupported format is provided
+     * @param string|null $environment
+     * @throws \Exception if the format is not supported or the environment is not found
      */
-    public function __construct($path) {
+    public function __construct($path, $environment = null) {
         if (file_exists($path) == false || is_file($path) == false) {
             throw new \Exception("Cannot find path: {$path}");
         }
@@ -29,7 +30,16 @@ class Config implements \ArrayAccess {
         $format = strtoupper($file['extension']);
         $method = 'load' . $format;
         if (method_exists($this, $method)) {
-            $this->data = $this->$method($path);
+            $data = $this->$method($path);
+            if ($environment !== null) {
+                if (isset($data[$environment])) {
+                    $this->data = $data[$environment];
+                } else {
+                    throw new \Exception("Environment '{$environment}' not found");
+                }
+            } else {
+                $this->data = $data;
+            }
         } else {
             throw new \Exception("Unsupported format: {$format}");
         }
@@ -37,10 +47,11 @@ class Config implements \ArrayAccess {
 
     /**
      * @param $path
+     * @param string|null $environment
      * @return Config
      */
-    public static function load($path) {
-        return new Config($path);
+    public static function load($path, $environment = null) {
+        return new Config($path, $environment);
     }
 
     /**
